@@ -16,6 +16,7 @@ docker push ronaldvk90/avahinix:amd64
 docker push ronaldvk90/avahinix:arm64
 docker push ronaldvk90/avahinix:armv7
 
+######################################
 #docker manifest rm ronaldvk90/avahinix:latest || true
 #docker manifest create ronaldvk90/avahinix:latest \
 #	ronaldvk90/avahinix:amd64 \

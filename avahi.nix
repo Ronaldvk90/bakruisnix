@@ -40,16 +40,37 @@ pkgs.dockerTools.buildImage {
     ## Avahi actual entrypoint
     avahi-daemon
     '')
-    ]; 
-  }; 
 
-#  runAsRoot = ''
-#    #!${pkgs.runtimeShell}
-#    ${pkgs.dockerTools.shadowSetup}
-#    groupadd -r avahi
-#    useradd -r -g avahi avahi
-#    mkdir -p /run/avahi-daemon
-#  '';
+  (pkgs.runCommand "avahi-users" {} ''
+    mkdir -p $out/etc
+
+    cat > $out/etc/passwd <<EOF
+    root:x:0:0:root:/root:/bin/sh
+    avahi:x:100:100:avahi:/var/empty:/sbin/nologin
+    EOF
+
+    cat > $out/etc/group <<EOF
+    root:x:0:
+    avahi:x:100:
+    EOF
+    '')
+
+  (pkgs.runCommand "avahi-users" {} ''
+    mkdir -p $out/etc
+  
+    cat > $out/etc/passwd <<EOF
+    root:x:0:0:root:/root:/bin/sh
+    avahi:x:100:100:avahi:/var/empty:/sbin/nologin
+    EOF
+
+    cat > $out/etc/group <<EOF
+    root:x:0:
+    avahi:x:100:
+    EOF
+    '')
+    ];
+  };
+  
 
   config = {
   Env = ["PATH=/bin/"];
