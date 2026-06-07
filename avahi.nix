@@ -15,7 +15,7 @@ in
 
 ######## DBUS container ##########
 pkgs.dockerTools.buildImage {
-  name = "dbusnix";
+  name = "avahinix";
   tag = "latest";
   copyToRoot = pkgs.buildEnv {
     ignoreCollisions = true;
