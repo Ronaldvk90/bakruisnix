@@ -29,14 +29,8 @@ pkgs.dockerTools.buildImage {
     postInstall = ''
     rm $out/etc/avahi/services/*
   ''; }))
-
-  runAsRoot = ''
-    #!${pkgs.runtimeShell}
-    ${pkgs.dockerTools.shadowSetup}
-    groupadd -r avahi
-    useradd -r -g avahi avahi
-    mkdir -p /run/avahi-daemon
-  '';
+    bash
+    coreutils
 
   (pkgs.writeShellScriptBin "entrypoint" ''
     ## Make sure there is no pidfile, or else the daemon won't start
@@ -47,6 +41,14 @@ pkgs.dockerTools.buildImage {
     '')
     ]; 
   }; 
+
+  runAsRoot = ''
+    #!${pkgs.runtimeShell}
+    ${pkgs.dockerTools.shadowSetup}
+    groupadd -r avahi
+    useradd -r -g avahi avahi
+    mkdir -p /run/avahi-daemon
+  '';
 
   config = {
   Env = ["PATH=/bin/"];
