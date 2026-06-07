@@ -34,6 +34,7 @@ pkgs.dockerTools.buildImage {
 
   (pkgs.writeShellScriptBin "entrypoint" ''
     ## Make sure there is no pidfile, or else the daemon won't start
+    mkdir -p /run/avahi-daemon
     rm -rf /var/run/avahi-daemon/pid
 
     ## Avahi actual entrypoint
@@ -42,13 +43,13 @@ pkgs.dockerTools.buildImage {
     ]; 
   }; 
 
-  runAsRoot = ''
-    #!${pkgs.runtimeShell}
-    ${pkgs.dockerTools.shadowSetup}
-    groupadd -r avahi
-    useradd -r -g avahi avahi
-    mkdir -p /run/avahi-daemon
-  '';
+#  runAsRoot = ''
+#    #!${pkgs.runtimeShell}
+#    ${pkgs.dockerTools.shadowSetup}
+#    groupadd -r avahi
+#    useradd -r -g avahi avahi
+#    mkdir -p /run/avahi-daemon
+#  '';
 
   config = {
   Env = ["PATH=/bin/"];
