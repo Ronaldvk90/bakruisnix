@@ -1,8 +1,8 @@
 #!/usr/bin/env bash 
 
-nix-build avahinix.nix --argstr system x86_64-linux -o result-amd64
-nix-build avahinix.nix --argstr system aarch64-linux -o result-arm64
-nix-build avahinix.nix --argstr system armv7l-linux -o result-armv7
+nix-build avahi.nix --argstr system x86_64-linux -o result-amd64
+nix-build avahi.nix --argstr system aarch64-linux -o result-arm64
+nix-build avahi.nix --argstr system armv7l-linux -o result-armv7
 
 docker load < result-amd64
 docker tag avahinix:latest ronaldvk90/avahinix:amd64
