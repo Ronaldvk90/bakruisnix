@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-nix build .#dbus-x86   -o result-dbus-x86
-nix build .#dbus-arm64 -o result-dbus-arm64
-nix build .#dbus-armv7 -o result-dbus-armv7
+nix build .#dbus-x86   -o ./dbus/result-x86
+nix build .#dbus-arm64 -o ./dbus/result-arm64
+nix build .#dbus-armv7 -o ./dbus/result-armv7
 
-nix build .#avahi-x86   -o result-avahi-x86
-nix build .#avahi-arm64 -o result-avahi-arm64
-nix build .#avahi-armv7 -o result-avahi-armv7
+nix build .#avahi-x86   -o ./avahi/result-x86
+nix build .#avahi-arm64 -o ./avahi/result-arm64
+nix build .#avahi-armv7 -o ./avahi/result-armv7
