@@ -20,19 +20,19 @@ pkgs.dockerTools.buildImage {
     tail -f /dev/null
     '')
 
-  (pkgs.runCommand "avahi-users" {} ''
-    mkdir -p $out/etc
-
-    cat > $out/etc/passwd <<EOF
-    root:x:0:0:root:/root:/bin/sh
-    shairport-sync:x:100:100:avahi:/var/empty:/sbin/nologin
-    EOF
-
-    cat > $out/etc/group <<EOF
-    root:x:0:
-    shairport-sync:x:100:
-    EOF
-    '')
+#  (pkgs.runCommand "shairport-user" {} ''
+#    mkdir -p $out/etc
+#
+#    cat > $out/etc/passwd <<EOF
+#    root:x:0:0:root:/root:/bin/sh
+#    shairport-sync:x:100:100:avahi:/var/empty:/sbin/nologin
+#    EOF
+#
+#    cat > $out/etc/group <<EOF
+#    root:x:0:
+#    shairport-sync:x:100:
+#    EOF
+#    '')
     ];
   };
   
