@@ -12,12 +12,21 @@ pkgs.dockerTools.buildImage {
                              ];
 
   paths = with pkgs; [
-  shairpot-sync
+  shairport-sync
+  nqptp
   coreutils
   bash
 
   (pkgs.writeShellScriptBin "entrypoint" ''
-    tail -f /dev/null
+    echo "Starting nqptp"
+    nqptp&
+
+    #Set the hostname
+    sed -i "s/\<NAME\>/$NAME/" /etc/shairport-sync.conf
+
+    echo "Starting shairport-sync"
+    # pass all commandline options to shairport-sync
+    shairport-sync "$@"
     '')
 
 #  (pkgs.runCommand "shairport-user" {} ''
