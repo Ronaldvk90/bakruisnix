@@ -14,11 +14,12 @@ pkgs.dockerTools.buildImage {
   paths = with pkgs; [
   shairport-sync
   gnused
-  coreutils
   nqptp
-  bash
 
   (pkgs.writeShellScriptBin "entrypoint" ''
+    echo "creating /tmp"
+    mkdir /tmp
+
     echo "Starting nqptp"
     nqptp&
 
@@ -29,20 +30,6 @@ pkgs.dockerTools.buildImage {
     # pass all commandline options to shairport-sync
     shairport-sync "$@"
     '')
-
-#  (pkgs.runCommand "shairport-user" {} ''
-#    mkdir -p $out/etc
-#
-#    cat > $out/etc/passwd <<EOF
-#    root:x:0:0:root:/root:/bin/sh
-#    shairport-sync:x:100:100:avahi:/var/empty:/sbin/nologin
-#    EOF
-#
-#    cat > $out/etc/group <<EOF
-#    root:x:0:
-#    shairport-sync:x:100:
-#    EOF
-#    '')
     ];
   };
   
