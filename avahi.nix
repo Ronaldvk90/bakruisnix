@@ -1,19 +1,6 @@
-{ system ? builtins.currentSystem }:
+{ pkgs }:
 
-let
-
-  pkgs =
-    if system == "armv7l-linux"
-    then
-      (import <nixpkgs> {
-        system = "x86_64-linux";
-      }).pkgsCross.armv7l-hf-multiplatform
-  else import <nixpkgs> {
-    inherit system;
-  }; 
-in
-
-######## DBUS container ##########
+######## AVAHI container ##########
 pkgs.dockerTools.buildImage {
   name = "avahinix";
   tag = "latest";

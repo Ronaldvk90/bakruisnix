@@ -1,17 +1,4 @@
-{ system ? builtins.currentSystem }:
-
-let
-
-  pkgs =
-    if system == "armv7l-linux"
-    then
-      (import <nixpkgs> {
-        system = "x86_64-linux";
-      }).pkgsCross.armv7l-hf-multiplatform
-  else import <nixpkgs> {
-    inherit system;
-  }; 
-in
+{ pkgs }:
 
 ######## DBUS container ##########
 pkgs.dockerTools.buildImage {
