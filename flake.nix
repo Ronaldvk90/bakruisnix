@@ -33,6 +33,121 @@
 
   in {
 
+  compose = pkgsX86.writeText "docker-compose.yml" ''
+  services:
+    dbus:
+      env_file: ".env"
+      image: ronaldvk90/dbus:latest
+      build: dbus/.
+      restart: unless-stopped
+      volumes:
+        - dbussocket:/var/run/dbus/
+        - ./dbus/system_services/:/usr/share/dbus-1/system.d/
+        - ./dbus/session_services/:/usr/share/dbus-1/session.d/
+      networks:
+        bakruislan:
+          ipv4_address: 172.31.0.2
+      security_opt:
+        - label=disable
+
+    avahi:
+      depends_on:
+        dbus:
+          condition: service_healthy
+      env_file: ".env"
+      image: ronaldvk90/avahi:latest
+      build: avahi/.
+      restart: unless-stopped
+      volumes:
+        - dbussocket:/var/run/dbus/
+      network_mode: host
+      security_opt:
+        - label=disable
+
+    pulseaudio:
+      hostname: pulseaudio
+      depends_on:
+        dbus:
+          condition: service_healthy
+      env_file: .env
+      image: ronaldvk90/pulseaudio:latest
+      build: pulseaudio/.
+      restart: unless-stopped
+      volumes:
+        - dbussocket:/var/run/dbus/
+        - ./pulseaudio/default.pa.d/:/etc/pulse/default.pa.d/
+        - /run/udev:/run/udev:ro
+      devices:
+        - "/dev/snd"
+      ports:
+        - "4713:4713"
+      networks:
+        bakruislan:
+          ipv4_address: 172.31.0.3
+      security_opt:
+        - label=disable
+
+    bluetooth:
+      depends_on:
+        pulseaudio:
+          condition: service_healthy
+      env_file: ".env"
+      image: ronaldvk90/bluetooth:latest
+      build: bluetooth/.
+      restart: unless-stopped
+      volumes:
+        - dbussocket:/var/run/dbus/
+        - btdevices:/var/lib/bluetooth
+      cap_add:
+        - NET_ADMIN
+        - SYS_ADMIN
+      network_mode: host
+      security_opt:
+        - label=disable
+
+    shairport-sync:
+      depends_on:
+        pulseaudio:
+          condition: service_healthy
+      env_file: .env
+      image: ronaldvk90/shairport-sync:latest
+      restart: unless-stopped
+      network_mode: "host"
+      volumes:
+        - dbussocket:/var/run/dbus/
+      logging:
+        options:
+          max-size: "200k"
+          max-file: "10"
+      security_opt:
+        - label=disable
+
+    spotify:
+      depends_on:
+        pulseaudio:
+          condition: service_healthy
+      env_file: .env
+      build: spotify/.
+      image: ronaldvk90/spotify:latest
+      restart: unless-stopped
+      network_mode: "host"
+      volumes:
+        - dbussocket:/var/run/dbus/
+      security_opt:
+        - label=disable
+
+  volumes:
+    btdevices:
+    dbussocket:
+
+  networks:
+    bakruislan:
+      driver: bridge
+      ipam:
+        config:
+          - subnet: 172.31.0.0/24
+  '';
+
     packages.x86_64-linux = {
 
       # dbus 

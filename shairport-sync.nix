@@ -1,5 +1,16 @@
 { pkgs }:
 
+let
+  shairportConfig = pkgs.runCommand "shairport-config" {} ''
+    mkdir -p $out/etc
+    mkdir -p $out/tmp
+
+    cp ${./shairport-sync/shairport-sync.conf} \
+      $out/etc/shairport-sync.conf
+  '';
+in
+
+
 ######## AVAHI container ##########
 pkgs.dockerTools.buildImage {
   name = "shairport-syncnix";
@@ -13,13 +24,12 @@ pkgs.dockerTools.buildImage {
 
   paths = with pkgs; [
   shairport-sync
+  procps
+  coreutils
   gnused
   nqptp
 
   (pkgs.writeShellScriptBin "entrypoint" ''
-    echo "creating /tmp"
-    mkdir /tmp
-
     echo "Starting nqptp"
     nqptp&
 
@@ -37,11 +47,11 @@ pkgs.dockerTools.buildImage {
   config = {
   Env = ["PATH=/bin/"];
   Cmd = [ "entrypoint" ];
-#  Healthcheck = {
-#    Test = [ "CMD-SHELL" "test -S /var/run/avahi-daemon/socket || exit 1" ];
-#    Interval = 5 * 1000000000;
-#    Timeout = 10 * 1000000000;
-#    Retries = 10;
-#    };
+  Healthcheck = {
+    Test = [ "CMD-SHELL" "pgrep shairport-sync > /dev/null || exit 1" ];
+    Interval = 5 * 1000000000;
+    Timeout = 10 * 1000000000;
+    Retries = 10;
+    };
   };
 }
