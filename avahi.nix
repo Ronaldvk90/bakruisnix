@@ -29,8 +29,6 @@ pkgs.dockerTools.buildImage {
     postInstall = ''
     rm $out/etc/avahi/services/*
   ''; }))
-    bash
-    coreutils
 
   (pkgs.writeShellScriptBin "entrypoint" ''
     ## Make sure there is no pidfile, or else the daemon won't start
