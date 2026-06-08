@@ -21,7 +21,7 @@ pkgs.dockerTools.buildImage {
                              ];
 
   paths = with pkgs; [
-  shairport-sync
+  shairport-sync-airplay2
   procps
   coreutils
   gnused
