@@ -1,3 +1,5 @@
 result*
 ./dbus/result*
 ./avahi/result*
+./shairport-sync/result*
+./pulseaudio/result*
