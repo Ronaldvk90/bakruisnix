@@ -3,10 +3,8 @@
 let
   shairportConfig = pkgs.runCommand "shairport-config" {} ''
     mkdir -p $out/etc
-    mkdir -p $out/tmp
 
-    cp ${./shairport-sync/shairport-sync.conf} \
-      $out/etc/shairport-sync.conf
+    cp ${./shairport-sync/shairport-sync.conf} $out/etc/shairport-sync.conf
   '';
 in
 
@@ -28,8 +26,14 @@ pkgs.dockerTools.buildImage {
   coreutils
   gnused
   nqptp
+  bash
+  shairportConfig  
 
   (pkgs.writeShellScriptBin "entrypoint" ''
+    echo "creating /tmp"
+    mkdir /tmp
+    chmod 777 /tmp
+
     echo "Starting nqptp"
     nqptp&
 
