@@ -66,6 +66,22 @@
         import ./avahi.nix {
           pkgs = pkgsArmv7;
         };
+      
+      # shairport-sync
+      shairport-sync-x86 =
+        import ./shairport-sync.nix {
+          pkgs = pkgsX86;
+        };
+
+      shairport-sync-arm64 =
+        import ./shairport-sync.nix {
+          pkgs = pkgsArm64;
+        };
+
+      shairport-sync-armv7 =
+        import ./shairport-sync.nix {
+          pkgs = pkgsArmv7;
+        };
     };
   };
 }
