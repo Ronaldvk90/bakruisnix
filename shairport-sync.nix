@@ -13,8 +13,9 @@ pkgs.dockerTools.buildImage {
 
   paths = with pkgs; [
   shairport-sync
-  nqptp
+  gnused
   coreutils
+  nqptp
   bash
 
   (pkgs.writeShellScriptBin "entrypoint" ''
