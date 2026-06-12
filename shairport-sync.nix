@@ -1,15 +1,75 @@
 { pkgs }:
 
 let
-  shairportConfig = pkgs.runCommand "shairport-config" {} ''
-    mkdir -p $out/etc
+shairport = pkgs.stdenv.mkDerivation {
+  pname = "shairport-sync-roon";
+  version = "5.0.4";
 
-    cp ${./shairport-sync/shairport-sync.conf} $out/etc/shairport-sync.conf
-  '';
+  src = pkgs.fetchFromGitHub {
+    owner = "mikebrady";
+    repo = "shairport-sync";
+    rev = "5.0.4";
+    hash = "sha256-7/QB0lvpjZnGXo4vjKSYogjhi66S/QRRpypsqEMLGj0=";
+  };
+
+  nativeBuildInputs = with pkgs; [
+    autoreconfHook
+    pkg-config
+    libplist
+    xxd
+  ];
+
+  buildInputs = with pkgs; [
+    openssl
+    avahi
+    libpulseaudio
+    nqptp
+    popt
+    libconfig
+    soxr
+    alsa-lib
+    libsndfile
+    glib
+    mosquitto
+    libplist
+    xxd
+    libsodium
+    libgcrypt
+    libuuid
+    ffmpeg-headless
+  ];
+
+  configureFlags = [
+#  "--sysconfdir=/etc"
+  "--with-alsa"
+  "--with-pulseaudio"
+  "--with-soxr"
+  "--with-avahi"
+  "--with-ssl=openssl"
+  "--with-airplay-2"
+#  "--with-metadata"
+#  "--with-dummy"
+#  "--with-pipe"
+#  "--with-dbus-interface"
+#  "--with-stdout"
+#  "--with-mpris-interface"
+#  "--with-mqtt-client"
+#  "--with-apple-alac"
+#  "--with-convolution"
+#  "--with-pw"
+  ];
+};
 in
 
+#let
+#  shairportConfig = pkgs.runCommand "shairport-config" {} ''
+#    mkdir -p $out/etc
+#
+#    cp ${./shairport-sync/shairport-sync.conf} $out/etc/shairport-sync.conf
+#  '';
+#in
 
-######## AVAHI container ##########
+######## Shairport-sync container ##########
 pkgs.dockerTools.buildImage {
   name = "shairport-syncnix";
   tag = "latest";
@@ -17,17 +77,17 @@ pkgs.dockerTools.buildImage {
     ignoreCollisions = true;
     name = "rootfs";
     pathsToLink = ["/bin"
-                              "/etc"
-                             ];
+                   "/etc"
+                  ];
 
   paths = with pkgs; [
-  shairport-sync-airplay2
+  shairport
   procps
   coreutils
   gnused
   nqptp
   bash
-  shairportConfig  
+  vim
 
   (pkgs.writeShellScriptBin "entrypoint" ''
     echo "creating /tmp"
@@ -37,12 +97,10 @@ pkgs.dockerTools.buildImage {
     echo "Starting nqptp"
     nqptp&
 
-    #Set the hostname
-    sed -i "s/\<NAME\>/$NAME/" /etc/shairport-sync.conf
 
     echo "Starting shairport-sync"
     # pass all commandline options to shairport-sync
-    shairport-sync "$@"
+    shairport-sync --name=$NAME --output=pulseaudio 
     '')
     ];
   };
