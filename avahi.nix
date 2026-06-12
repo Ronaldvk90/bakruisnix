@@ -1,4 +1,4 @@
-{ pkgs. arch }:
+{ pkgs, arch }:
 
 ######## AVAHI container ##########
 pkgs.dockerTools.buildImage {
@@ -8,10 +8,12 @@ pkgs.dockerTools.buildImage {
     ignoreCollisions = true;
     name = "rootfs";
     pathsToLink = ["/bin"
-                              "/etc"
-                             ];
+                   "/etc"
+                  ];
 
   paths = with pkgs; [
+    coreutils
+    procps
     (pkgs.avahi.overrideAttrs (old: {
     postInstall = ''
     rm $out/etc/avahi/services/*
@@ -47,7 +49,7 @@ pkgs.dockerTools.buildImage {
   Env = ["PATH=/bin/"];
   Cmd = [ "entrypoint" ];
   Healthcheck = {
-    Test = [ "CMD-SHELL" "test -S /var/run/avahi-daemon/socket || exit 1" ];
+    Test = [ "CMD-SHELL" "pgrep avahi-daemon > /dev/null || exit 1" ];
     Interval = 5 * 1000000000;
     Timeout = 10 * 1000000000;
     Retries = 10;

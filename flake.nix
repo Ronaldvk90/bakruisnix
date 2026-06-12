@@ -173,16 +173,19 @@
       avahi-x86 =
         import ./avahi.nix {
           pkgs = pkgsX86;
+          arch = "x86_64";
         };
 
       avahi-arm64 =
         import ./avahi.nix {
           pkgs = pkgsArm64;
+          arch = "aarch64";
         };
 
       avahi-armv7 =
         import ./avahi.nix {
           pkgs = pkgsArmv7;
+          arch = "armv7";
         };
       
       # shairport-sync
