@@ -1,9 +1,9 @@
-{ pkgs }:
+{ pkgs, arch }:
 
 ######## DBUS container ##########
 pkgs.dockerTools.buildImage {
-  name = "dbusnix";
-  tag = "latest";
+  name = "ronaldvk90/dbusnix";
+  tag = arch;
   copyToRoot = pkgs.buildEnv {
     ignoreCollisions = true;
     name = "rootfs";

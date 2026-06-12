@@ -154,16 +154,19 @@
       dbus-x86 =
         import ./dbus.nix {
           pkgs = pkgsX86;
+          arch = "x86_64";
         };
 
       dbus-arm64 =
         import ./dbus.nix {
           pkgs = pkgsArm64;
+ 	  arch = "aarch64";
         };
 
       dbus-armv7 =
         import ./dbus.nix {
           pkgs = pkgsArmv7;
+          arch = "armv7";
         };
 
       # avahi 

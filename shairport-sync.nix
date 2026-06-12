@@ -1,4 +1,4 @@
-{ pkgs }:
+{ pkgs, arch }:
 
 let
 shairport = pkgs.stdenv.mkDerivation {
@@ -71,8 +71,8 @@ in
 
 ######## Shairport-sync container ##########
 pkgs.dockerTools.buildImage {
-  name = "shairport-syncnix";
-  tag = "latest";
+  name = "ronaldvk90/shairport-syncnix";
+  tag = arch;
   copyToRoot = pkgs.buildEnv {
     ignoreCollisions = true;
     name = "rootfs";
