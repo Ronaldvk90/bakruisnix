@@ -2,7 +2,7 @@
 
 ######## AVAHI container ##########
 pkgs.dockerTools.buildImage {
-  name = "ronaldvk90/avahinix";
+  name = "ronaldvk90/avahi";
   tag = arch;
   copyToRoot = pkgs.buildEnv {
     ignoreCollisions = true;
