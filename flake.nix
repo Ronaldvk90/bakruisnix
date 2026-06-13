@@ -206,6 +206,25 @@
           pkgs = pkgsArmv7;
 	  arch = "armv7";
         };
+
+      # pulseaudio 
+      pulseaudio-x86 =
+        import ./pulseaudio.nix {
+          pkgs = pkgsX86;
+          arch = "x86_64";
+        };
+
+      pulseaudio-arm64 =
+        import ./pulseaudio.nix {
+          pkgs = pkgsArm64;
+          arch = "aarch64";
+        };
+
+      pulseaudio-armv7 =
+        import ./pulseaudio.nix {
+          pkgs = pkgsArmv7;
+          arch = "armv7";
+        };
     };
   };
 }

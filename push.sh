@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
 echo "Loading in the docker images" 
-docker load < $1/result-x86
-docker load < $1/result-armv7
-docker load < $1/result-arm64
+docker load < dbus/result-x86
+#docker load < $1/result-x86
+docker load < dbus/result-armv7
+#docker load < $1/result-armv7
+#docker load < $1/result-arm64
+docker load < dbus/result-arm64
 
 echo "pusing induvidable images"
 docker push ronaldvk90/$1:x86_64
