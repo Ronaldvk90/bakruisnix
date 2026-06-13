@@ -12,6 +12,7 @@ pkgs.dockerTools.buildImage {
                   ];
 
   paths = with pkgs; [
+    bash
     coreutils
     procps
     (pkgs.avahi.overrideAttrs (old: {

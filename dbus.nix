@@ -17,6 +17,7 @@ pkgs.dockerTools.buildImage {
     rm -rf $out/etc/dbus-1
   ''; }))
   procps
+  bash
 
   (pkgs.writeTextDir "etc/dbus-1/system.conf" ''
     <!DOCTYPE  busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN" http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">

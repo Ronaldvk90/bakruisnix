@@ -37,6 +37,7 @@ shairport = pkgs.stdenv.mkDerivation {
     libgcrypt
     libuuid
     ffmpeg-headless
+    bash
   ];
 
   configureFlags = [
