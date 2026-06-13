@@ -192,16 +192,19 @@
       shairport-sync-x86 =
         import ./shairport-sync.nix {
           pkgs = pkgsX86;
+	  arch = "x86_64";
         };
 
       shairport-sync-arm64 =
         import ./shairport-sync.nix {
           pkgs = pkgsArm64;
+	  arch = "aarch64";
         };
 
       shairport-sync-armv7 =
         import ./shairport-sync.nix {
           pkgs = pkgsArmv7;
+	  arch = "armv7";
         };
     };
   };

@@ -2,7 +2,7 @@
 
 ######## DBUS container ##########
 pkgs.dockerTools.buildImage {
-  name = "ronaldvk90/dbusnix";
+  name = "ronaldvk90/dbus";
   tag = arch;
   copyToRoot = pkgs.buildEnv {
     ignoreCollisions = true;
@@ -20,7 +20,7 @@ pkgs.dockerTools.buildImage {
   bash
 
   (pkgs.writeTextDir "etc/dbus-1/system.conf" ''
-    <!DOCTYPE  busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN" http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+    <!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-Bus Bus Configuration 1.0//EN" "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
     <busconfig>
       <includedir>system.d</includedir>
     </busconfig> '')
@@ -32,8 +32,8 @@ pkgs.dockerTools.buildImage {
     </busconfig> '')
 
   (pkgs.writeShellScriptBin "entrypoint" ''
-      dbus-daemon --session –fork
-      dbus-daemon --system –nofork
+      dbus-daemon --session --fork
+      dbus-daemon --system --nofork
     '')
     ]; 
   }; 

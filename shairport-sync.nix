@@ -72,7 +72,7 @@ in
 
 ######## Shairport-sync container ##########
 pkgs.dockerTools.buildImage {
-  name = "ronaldvk90/shairport-syncnix";
+  name = "ronaldvk90/shairport-sync";
   tag = arch;
   copyToRoot = pkgs.buildEnv {
     ignoreCollisions = true;
