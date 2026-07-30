@@ -8,8 +8,8 @@ pkgs.dockerTools.buildImage {
     ignoreCollisions = true;
     name = "rootfs";
     pathsToLink = ["/bin"
-                              "/etc"
-                             ];
+                   "/etc"
+                  ];
 
   paths = with pkgs; [
     (pkgs.dbus.overrideAttrs (old: {

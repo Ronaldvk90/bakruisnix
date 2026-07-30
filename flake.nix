@@ -150,6 +150,25 @@
 
     packages.x86_64-linux = {
 
+      # bluetooth 
+      bluetooth-x86 =
+        import ./bluetooth.nix {
+          pkgs = pkgsX86;
+          arch = "x86_64";
+        };
+
+      bluetooth-arm64 =
+        import ./bluetooth.nix {
+          pkgs = pkgsArm64;
+ 	        arch = "aarch64";
+        };
+
+      bluetooth-armv7 =
+        import ./bluetooth.nix {
+          pkgs = pkgsArmv7;
+          arch = "armv7";
+        };
+
       # dbus 
       dbus-x86 =
         import ./dbus.nix {
